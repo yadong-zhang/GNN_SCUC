@@ -11,23 +11,20 @@ from torch.functional import F
 from torch_geometric.nn import GCNConv, GINConv, MLP
 
 class GNNLoadRegressor(nn.Module):
-    def __init__(self, input_dim1=32, input_dim2=44, hidden_dim1=32, hidden_dim2=32, output_dim1=32, output_dim2=12):
+    def __init__(self, input_dim=32, hidden_dim=24, output_dim=12):
         super(GNNLoadRegressor, self).__init__()
 
-        self.input_dim1 = input_dim1
-        self.input_dim2 = input_dim2
-        self.hidden_dim1 = hidden_dim1
-        self.hidden_dim2 = hidden_dim2
-        self.output_dim1 = output_dim1
-        self.output_dim2 = output_dim2
+        self.input_dim = input_dim
+        self.hidden_dim = hidden_dim
+        self.output_dim = output_dim
 
         # ANN layers
         self.ann = nn.Sequential(
-            nn.Linear(self.input_dim2, self.hidden_dim2),
+            nn.Linear(self.input_dim, self.hidden_dim),
             nn.ReLU(),
-            nn.Linear(self.hidden_dim2, self.hidden_dim2),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
             nn.ReLU(),
-            nn.Linear(self.hidden_dim2, self.output_dim2),
+            nn.Linear(self.hidden_dim, self.output_dim),
             nn.ReLU(),
         )
 
