@@ -31,7 +31,7 @@ corr_matrix = readmatrix('../corr_mat/corr_matrix.xlsx');   % Read correlation m
 
 for i = 1:nt
     % Get covariance matrix from correlation matrix
-    temp = sqrt(diag(i*ones(num_vars, 1)));     % Diagonal matrix of variance
+    temp = sqrt(diag(i*ones(num_vars, 1)));     % Diagonal matrix of s.t.d. deviation (root of variance)
     cov_matrix =  temp * corr_matrix * temp;
     correlated_CDF(:, i) = mvncdf(X(:, :, i)', zeros(1, num_vars), cov_matrix);
 end
