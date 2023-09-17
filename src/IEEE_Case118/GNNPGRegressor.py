@@ -107,7 +107,7 @@ class PGGCN(nn.Module):
             nn.ReLU()
         )
 
-        # SAGE layers
+        # GCN layers
         self.gnn = Sequential('x, edge_index', [
             (GCNConv(self.input_dim2, self.hidden_dim2), 'x, edge_index -> x'),
             nn.ReLU(),
