@@ -42,7 +42,7 @@ zone2_loads = tensorprod(zone2_load_prop, agg_loads(2, :, :), 2, 1);
 zone3_loads = tensorprod(zone3_load_prop, agg_loads(3, :, :), 2, 1);
 
 % Get combined load samples
-zone1_load_bidx = ismember(load_bus, zone1_load_bus);   % Get boolean index of  zone 1 load bus out of all load buses
+zone1_load_bidx = ismember(load_bus, zone1_load_bus);   % Get Boolean index of  zone 1 load bus out of all load buses
 zone2_load_bidx = ismember(load_bus, zone2_load_bus);
 zone3_load_bidx = ismember(load_bus, zone3_load_bus);
 
@@ -81,7 +81,7 @@ zone2_winds(:, :, :) = tensorprod(zone2_wind_prop, agg_winds(2, :, :), 2, 1);
 zone3_winds(:, :, :) = tensorprod(zone3_wind_prop, agg_winds(3, :, :), 2, 1);
 
 % Get combined wind samples
-zone1_wind_bidx = ismember(wind_bus, zone1_wind_bus);   % Get boolean index of  zone 1 wind bus out of all wind buses
+zone1_wind_bidx = ismember(wind_bus, zone1_wind_bus);   % Get Boolean index of  zone 1 wind bus out of all wind buses
 zone2_wind_bidx = ismember(wind_bus, zone2_wind_bus);
 zone3_wind_bidx = ismember(wind_bus, zone3_wind_bus);
 

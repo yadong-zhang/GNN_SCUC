@@ -74,10 +74,10 @@ num_samples = 1000;
 
 %%%%%%%%%%%%%% Be careful about this number %%%%%%%%%%%%%%%%%%%%%
 % The number of stochastic winds/loads
-max_num_samples = 1000;    
+max_num_samples = 1500;    
 
 load_shed_bidx = ones(num_samples, 1);      % Record load shedding bidx, 1 for shedding, 0 for no shedding
-wind_usage_bidx = zeros(num_samples, 1);      % Record wind usage bidx, 1 for 100% usage, 0 for not
+% wind_usage_bidx = zeros(num_samples, 1);      % Record wind usage bidx, 1 for 100% usage, 0 for not
 
 
 %% Run MC simulation
@@ -131,12 +131,45 @@ while true
         continue;
     end
 
+
+
+    %%%%%%% Check whether wind is preferably used %%%%%%%%
+    deployed_wind = ms.Pg((num_gens+num_loads+1):end, :);
+    wind_Pg = profiles(1).values;
+    wind_Pg = reshape(wind_Pg, [nt, num_winds])';
+    if round(wind_Pg, 0) ~= round(deployed_wind, 0)
+        continue;
+    end
+    % Save deployed wind power
+    save_path = ['./outputs/deployed_wind/sample_' num2str(i) '.csv'];
+    writematrix(deployed_wind, save_path, 'WriteMode', 'overwrite');
+
+
+
+
+    %%%%%%% Check whether there is load shedding %%%%%%%%%
+    deployed_load = -ms.Pg(num_gens+1:num_gens+num_loads, :);
+    load_demand = profiles(2).values;
+    load_demand = reshape(load_demand, [nt, num_loads])';
+    if round(load_demand, 0) == round(deployed_load, 0)
+        load_shed_bidx(num) = 0;
+    end
+    % Save deployed load
+    save_path = ['./outputs/deployed_load/sample_' num2str(i) '.csv'];
+    writematrix(deployed_load, save_path, 'WriteMode', 'overwrite');
+
+
+
+
     %%%%%% Save wind and load inputs into MATPOWER %%%%%%%
     save_path = ['./inputs/wind/sample_' num2str(i) '.csv'];
     writematrix(wind_samples(:, :, i)', save_path, WriteMode="overwrite");
 
     save_path = ['./inputs/load/sample_' num2str(i) '.csv'];
     writematrix(load_samples(:, :, i)', save_path, WriteMode="overwrite");
+
+
+
 
     %%%%%%%%%%%%%%%%%% Save solution %%%%%%%%%%%%%%%%%%%%%
     % Get Boolean index of wind gens
@@ -162,31 +195,6 @@ while true
     save_path = ['./outputs/PF/sample_' num2str(i) '.csv'];
     writematrix(ms.Pf, save_path, 'WriteMode', 'overwrite');
 
-    % Save deployed wind power
-    save_path = ['./outputs/deployed_wind/sample_' num2str(i) '.csv'];
-    deployed_wind = ms.Pg((num_gens+num_loads+1):end, :);
-    writematrix(deployed_wind, save_path, 'WriteMode', 'overwrite');
-
-    % Save deployed load
-    save_path = ['./outputs/deployed_load/sample_' num2str(i) '.csv'];
-    deployed_load = -ms.Pg(num_gens+1:num_gens+num_loads, :);
-    writematrix(deployed_load, save_path, 'WriteMode', 'overwrite');
-
-
-    %%%%%%% Check whether wind is preferably used %%%%%%%%
-    wind_Pg = profiles(1).values;
-    wind_Pg = reshape(wind_Pg, [nt, num_winds])';
-    if round(wind_Pg, 0) == round(deployed_wind, 0)
-        wind_usage_bidx(num) = 1;
-    end
-
-    %%%%%%% Check whether there is load shedding %%%%%%%%%
-    load_demand = profiles(2).values;
-    load_demand = reshape(load_demand, [nt, num_loads])';
-    if round(load_demand, 0) == round(deployed_load, 0)
-        load_shed_bidx(num) = 0;
-    end
-
     num = num + 1;
 end
 
@@ -195,8 +203,8 @@ end_time = toc(start_time);
 fprintf('The computation time for %.d SCUC samples is %.f s.\n', num_samples, end_time);
 
 % Save load shedding bool index
-save_path = './outputs/wind_usage/bidx.csv';
-writematrix(wind_usage_bidx, save_path, WriteMode="overwrite");
+% save_path = './outputs/wind_usage/bidx.csv';
+% writematrix(wind_usage_bidx, save_path, WriteMode="overwrite");
 
 % Save wind usage bool index
 save_path = './outputs/load_shed/bidx.csv';
