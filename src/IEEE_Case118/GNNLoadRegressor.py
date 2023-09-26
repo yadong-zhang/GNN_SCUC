@@ -27,12 +27,12 @@ class DLANN(nn.Module):
             nn.Linear(self.hidden_dim, self.output_dim)
         )
         
-    def forward(self, x, edge_index, load_bidx):
+    def forward(self, x, edge_index):
 
         # ANN layers
         x = self.ann(x)
 
-        return x[load_bidx]
+        return x
     
 class DLSAGE(nn.Module):
     def __init__(self, input_dim=32, hidden_dim=24, output_dim=12):
@@ -51,12 +51,12 @@ class DLSAGE(nn.Module):
             (SAGEConv(self.hidden_dim, self.output_dim), 'x, edge_index -> x')
         ])
         
-    def forward(self, x, edge_index, load_bidx):
+    def forward(self, x, edge_index):
 
         # GNN layers
         x = self.gnn(x, edge_index)
 
-        return x[load_bidx]
+        return x
     
 class DLGCN(nn.Module):
     def __init__(self, input_dim=32, hidden_dim=24, output_dim=12):
@@ -75,9 +75,9 @@ class DLGCN(nn.Module):
             (GCNConv(self.hidden_dim, self.output_dim), 'x, edge_index -> x')
         ])
         
-    def forward(self, x, edge_index, load_bidx):
+    def forward(self, x, edge_index):
 
         # GNN layers
         x = self.gnn(x, edge_index)
 
-        return x[load_bidx]
+        return x
