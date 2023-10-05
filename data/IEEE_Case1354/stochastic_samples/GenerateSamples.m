@@ -1,10 +1,10 @@
-function [load_samples, wind_samples] = GenerateSamples(init_state, nt)
+function [X, correlated_CDF, cov_matrix, load_samples, wind_samples] = GenerateSamples(init_state, nt)
 
 % Generate spatio-temporal correlated load and wind samples
 % nt: time steps
 
 % Set random seed
-rng(16);
+rng(30);
 
 % Initial state
 num_vars = size(init_state, 1);
@@ -46,7 +46,7 @@ right_truc1 = 90;
 mu2 = 80;
 sigma2 = 20;
 left_truc2 = 25;
-right_truc2 = 125;
+right_truc2 = 135;
 
 mu3 = 100;
 sigma3 = 15;
@@ -163,29 +163,53 @@ end
 
 
 % % Convert wind speed to wind power
-left_truc1 = 0.5;    % Left truncation
-right_truc1 = 15;    % Right truncation
+% left_truc1 = 0.5;    % Left truncation
+% right_truc1 = 15;    % Right truncation
+% 
+% left_truc2 = 2;  
+% right_truc2 = 18; 
+% 
+% left_truc3 = 1;  
+% right_truc3 = 20;  
+% 
+% left_truc4 = 0.55;  
+% right_truc4 = 15.3; 
+% 
+% left_truc5 = 2.1;  
+% right_truc5 = 18.2;  
+% 
+% left_truc6 = 1.1;  
+% right_truc6 = 19.8; 
+% 
+% left_truc7 = 0.52;  
+% right_truc7 = 14.9;  
+% 
+% left_truc8 = 2.3;  
+% right_truc8 = 18.5; 
+
+left_truc1 = 2;    % Left truncation
+right_truc1 = 20;    % Right truncation
 
 left_truc2 = 2;  
-right_truc2 = 18; 
+right_truc2 = 20; 
 
-left_truc3 = 1;  
+left_truc3 = 2;  
 right_truc3 = 20;  
 
-left_truc4 = 0.55;  
-right_truc4 = 15.3; 
+left_truc4 = 2;  
+right_truc4 = 30; 
 
-left_truc5 = 2.1;  
-right_truc5 = 18.2;  
+left_truc5 = 2;  
+right_truc5 = 20;  
 
-left_truc6 = 1.1;  
-right_truc6 = 19.8; 
+left_truc6 = 2;  
+right_truc6 = 20; 
 
-left_truc7 = 0.52;  
-right_truc7 = 14.9;  
+left_truc7 = 2;  
+right_truc7 = 20;  
 
-left_truc8 = 2.3;  
-right_truc8 = 18.5; 
+left_truc8 = 2;  
+right_truc8 = 20; 
 
 
 Pr1 = 300;   % Set maximum power generation capacity as 300 MW
@@ -198,14 +222,14 @@ Pr7 = 300;
 Pr8 = 300;
 
 
-wind_samples(1, :, :) = Pr1*(wind_samples(1, :, :).^3 - left_truc1^3)/(right_truc1^3 - left_truc1^3);
-wind_samples(2, :, :) = Pr2*(wind_samples(2, :, :).^3 - left_truc2^3)/(right_truc2^3 - left_truc2^3);
-wind_samples(3, :, :) = Pr3*(wind_samples(3, :, :).^3 - left_truc3^3)/(right_truc3^3 - left_truc3^3);
-wind_samples(4, :, :) = Pr4*(wind_samples(4, :, :).^3 - left_truc4^3)/(right_truc4^3 - left_truc4^3);
-wind_samples(5, :, :) = Pr5*(wind_samples(5, :, :).^3 - left_truc5^3)/(right_truc5^3 - left_truc5^3);
-wind_samples(6, :, :) = Pr6*(wind_samples(6, :, :).^3 - left_truc6^3)/(right_truc6^3 - left_truc6^3);
-wind_samples(7, :, :) = Pr7*(wind_samples(7, :, :).^3 - left_truc7^3)/(right_truc7^3 - left_truc7^3);
-wind_samples(8, :, :) = Pr8*(wind_samples(8, :, :).^3 - left_truc8^3)/(right_truc8^3 - left_truc8^3);
+% wind_samples(1, :, :) = Pr1*(wind_samples(1, :, :).^3 - left_truc1^3)/(right_truc1^3 - left_truc1^3);
+% wind_samples(2, :, :) = Pr2*(wind_samples(2, :, :).^3 - left_truc2^3)/(right_truc2^3 - left_truc2^3);
+% wind_samples(3, :, :) = Pr3*(wind_samples(3, :, :).^3 - left_truc3^3)/(right_truc3^3 - left_truc3^3);
+% wind_samples(4, :, :) = Pr4*(wind_samples(4, :, :).^3 - left_truc4^3)/(right_truc4^3 - left_truc4^3);
+% wind_samples(5, :, :) = Pr5*(wind_samples(5, :, :).^3 - left_truc5^3)/(right_truc5^3 - left_truc5^3);
+% wind_samples(6, :, :) = Pr6*(wind_samples(6, :, :).^3 - left_truc6^3)/(right_truc6^3 - left_truc6^3);
+% wind_samples(7, :, :) = Pr7*(wind_samples(7, :, :).^3 - left_truc7^3)/(right_truc7^3 - left_truc7^3);
+% wind_samples(8, :, :) = Pr8*(wind_samples(8, :, :).^3 - left_truc8^3)/(right_truc8^3 - left_truc8^3);
 
 end
 

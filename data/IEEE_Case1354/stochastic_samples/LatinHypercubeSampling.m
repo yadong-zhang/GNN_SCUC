@@ -2,7 +2,7 @@ function LatinHypercubeSampling(num_zones, num_samples, nt)
 % Generate stochastic load and wind samples using LHS
 
 % Set random seed
-rng(12);
+rng(25);
 
 % Get num of variables
 num_vars = num_zones * 2;
@@ -14,7 +14,7 @@ sigma = 1;
 init_state = zeros(num_vars, num_samples);
 
 for i = 1:num_vars
-    init_state(i, :) = lhsnorm(mu, sigma, num_samples, 'off');
+    init_state(i, :) = lhsnorm(mu, sigma, num_samples, 'on');
 end
 
 

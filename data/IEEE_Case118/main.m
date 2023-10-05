@@ -17,8 +17,6 @@ num_loads = size(load_buses, 1);
 num_gens = size(gen_buses, 1);
 num_winds = size(wind_buses, 1);
 
-% Prepare files
-[mpc, xgd_table, wind_UC] = GetFiles();
 
 %% Read wind and load samples
 clc;
@@ -51,6 +49,11 @@ end
 load_samples = permute(load_samples, [3, 1, 2]);
 
 
+%%
+% Prepare files
+[mpc, xgd_table, wind_UC] = GetFiles();
+
+
 %% Prepare file
 clc;
    
@@ -80,7 +83,7 @@ load_shed_bidx = ones(num_samples, 1);      % Record load shedding bidx, 1 for s
 % wind_usage_bidx = zeros(num_samples, 1);      % Record wind usage bidx, 1 for 100% usage, 0 for not
 
 
-%% Run MC simulation
+% % Run MC simulation
 %%%%%%%%%%%%%% Be careful about this number %%%%%%%%%%%%%%%%%%%%%
 i = 0; 
 
@@ -137,7 +140,7 @@ while true
     deployed_wind = ms.Pg((num_gens+num_loads+1):end, :);
     wind_Pg = profiles(1).values;
     wind_Pg = reshape(wind_Pg, [nt, num_winds])';
-    if round(wind_Pg, 0) ~= round(deployed_wind, 0)
+    if any(any(round(wind_Pg, 0) ~= round(deployed_wind, 0)))
         continue;
     end
     % Save deployed wind power
@@ -157,8 +160,6 @@ while true
     % Save deployed load
     save_path = ['./outputs/deployed_load/sample_' num2str(i) '.csv'];
     writematrix(deployed_load, save_path, 'WriteMode', 'overwrite');
-
-
 
 
     %%%%%% Save wind and load inputs into MATPOWER %%%%%%%
@@ -202,11 +203,11 @@ end
 end_time = toc(start_time);
 fprintf('The computation time for %.d SCUC samples is %.f s.\n', num_samples, end_time);
 
-% Save load shedding bool index
+% Save wind usage bool index 
 % save_path = './outputs/wind_usage/bidx.csv';
 % writematrix(wind_usage_bidx, save_path, WriteMode="overwrite");
 
-% Save wind usage bool index
+% Save load shedding bool index
 save_path = './outputs/load_shed/bidx.csv';
 writematrix(load_shed_bidx, save_path, WriteMode="overwrite");
 
