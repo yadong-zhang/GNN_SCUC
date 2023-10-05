@@ -196,6 +196,8 @@ while true
     save_path = ['./outputs/PF/sample_' num2str(i) '.csv'];
     writematrix(ms.Pf, save_path, 'WriteMode', 'overwrite');
 
+    fprintf('The %d-th sample is generated successfully!\n', num);
+
     num = num + 1;
 end
 
