@@ -71,13 +71,13 @@ nt = size(wind_samples, 1);     % Number of time steps
 
 %%%%%%%%%%%%%% Be careful about this number %%%%%%%%%%%%%%%%%%%%%
 % Number of stochastic SCUC samples
-num_samples = 1000;    
+num_samples = 3000;    
 
 
 
 %%%%%%%%%%%%%% Be careful about this number %%%%%%%%%%%%%%%%%%%%%
 % The number of stochastic winds/loads
-max_num_samples = 1500;    
+max_num_samples = 10000;    
 
 load_shed_bidx = ones(num_samples, 1);      % Record load shedding bidx, 1 for shedding, 0 for no shedding
 % wind_usage_bidx = zeros(num_samples, 1);      % Record wind usage bidx, 1 for 100% usage, 0 for not
