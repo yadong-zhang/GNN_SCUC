@@ -73,9 +73,9 @@ class UCANN(nn.Module):
         # ANN layers
         self.ann = nn.Sequential(
             nn.Linear(self.input_dim, self.hidden_dim),
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Linear(self.hidden_dim, self.hidden_dim),
-            nn.ReLU(),
+            nn.Tanh(),
             nn.Linear(self.hidden_dim, self.output_dim),
             nn.Sigmoid()
         )
