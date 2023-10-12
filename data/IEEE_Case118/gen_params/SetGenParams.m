@@ -13,7 +13,7 @@ num_thermals = length(thermal_buses);
 
 % Max gen capacity
 rng(10);                              
-Pmax = 300*ones([num_gens, 1]);
+Pmax = 250*ones([num_gens, 1]);
 file_path = './Pmax.csv';
 writematrix(Pmax, file_path, WriteMode="overwrite");
 
