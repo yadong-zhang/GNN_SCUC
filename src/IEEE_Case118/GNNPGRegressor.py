@@ -69,13 +69,23 @@ class PGSAGE(nn.Module):
         )
 
         # SAGE layers
+        # self.gnn = Sequential('x, edge_index', [
+        #     (SAGEConv(self.input_dim2, self.hidden_dim2), 'x, edge_index -> x'),
+        #     nn.ReLU(),
+        #     (SAGEConv(self.hidden_dim2, self.hidden_dim2), 'x, edge_index -> x'),
+        #     nn.ReLU(),
+        #     (SAGEConv(self.hidden_dim2, self.output_dim2), 'x, edge_index -> x')
+        # ])
         self.gnn = Sequential('x, edge_index', [
-            (SAGEConv(self.input_dim2, self.hidden_dim2), 'x, edge_index -> x'),
+            (SAGEConv(self.input_dim2, 512), 'x, edge_index -> x'),
             nn.ReLU(),
-            (SAGEConv(self.hidden_dim2, self.hidden_dim2), 'x, edge_index -> x'),
+            (SAGEConv(512, 512), 'x, edge_index -> x'),
             nn.ReLU(),
-            (SAGEConv(self.hidden_dim2, self.output_dim2), 'x, edge_index -> x')
+            (SAGEConv(512, 128), 'x, edge_index -> x'),
+            nn.ReLU(),
         ])
+
+        self.readout = nn.Linear(128, 12)
     
     def forward(self, x, edge_index):
         # Encoder
@@ -84,6 +94,7 @@ class PGSAGE(nn.Module):
 
         # GNN layers
         x = self.gnn(x, edge_index)
+        x = self.readout(x)
 
         return x
     
