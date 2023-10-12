@@ -111,7 +111,7 @@ temp = Pr*(wind_samples.^3 - left_truc^3)/(right_truc^3 - left_truc^3);
 % Delete values less than zero
 temp = max(temp, zeros([num_vars/2, num_samples, nt]));
 
-% Delete values larger than Pr
+% Delete values 
 wind_samples = min(temp, Pr*ones([num_vars/2, num_samples, nt]));
 
 

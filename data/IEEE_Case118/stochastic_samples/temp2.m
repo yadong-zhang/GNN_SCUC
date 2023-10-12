@@ -1,13 +1,15 @@
+
+% Generate spatio-temporal correlated load and wind samples
+% nt: time steps
+
 % Set random seed
 rng('default');
 
-nt = 4;
-
-% Number of samples
-num_samples = 5;
-
-% Number of zones
 num_zones = 3;
+
+num_samples = 1000;
+
+nt = 5;
 
 % Get num of variables
 num_vars = num_zones * 2;
@@ -114,20 +116,101 @@ for i = 1:nt
 end
 
 
-% % Convert wind speed to wind power
-left_truc1 = 0.5;    % Left truncation
-right_truc1 = 15;    % Right truncation
+% % % Convert wind speed to wind power
+% left_truc1 = 0.5;    % Left truncation
+% right_truc1 = 15;    % Right truncation
+% 
+% left_truc2 = 2;  
+% right_truc2 = 18; 
+% 
+% left_truc3 = 1;  
+% right_truc3 = 20;  
+% 
+% Pr1 = 300;   % Set maximum power generation capacity as 300 MW
+% Pr2 = 300;
+% Pr3 = 300;
+% 
+% wind_samples(1, :, :) = Pr1*(wind_samples(1, :, :).^3 - left_truc1^3)/(right_truc1^3 - left_truc1^3);
+% wind_samples(2, :, :) = Pr2*(wind_samples(2, :, :).^3 - left_truc2^3)/(right_truc2^3 - left_truc2^3);
+% wind_samples(3, :, :) = Pr3*(wind_samples(3, :, :).^3 - left_truc3^3)/(right_truc3^3 - left_truc3^3);
+% 
 
-left_truc2 = 2;  
-right_truc2 = 18; 
 
-left_truc3 = 1;  
-right_truc3 = 20;  
+%%
+a = 8;  % Scale param
+b = 2;  % Shape param
+WeibullPDF = makedist('Weibull', 'a', a, 'b', b);             % Zone 1
 
-Pr1 = 300;   % Set maximum power generation capacity as 300 MW
-Pr2 = 300;
-Pr3 = 300;
+x = linspace(0, 50, 1000);
+y = WeibullPDF.pdf(x);
 
-wind_samples(1, :, :) = Pr1*(wind_samples(1, :, :).^3 - left_truc1^3)/(right_truc1^3 - left_truc1^3);
-wind_samples(2, :, :) = Pr2*(wind_samples(2, :, :).^3 - left_truc2^3)/(right_truc2^3 - left_truc2^3);
-wind_samples(3, :, :) = Pr3*(wind_samples(3, :, :).^3 - left_truc3^3)/(right_truc3^3 - left_truc3^3);
+rv = WeibullPDF.random([1000 1]);
+
+temp = 100 * (rv.^3 - 0.5^3) / (15.^3 - 0.5^3);
+temp = max(temp, zeros([size(temp, 1)], 1));
+converted_rv = min(temp, 100*ones([size(temp, 1)], 1));
+
+figure(1);
+plot(x, y);
+
+figure(2);
+subplot(1, 2, 1);
+histogram(rv, 100, 'Normalization', 'pdf');
+
+subplot(1, 2, 2);
+histogram(converted_rv, 100, 'Normalization', 'pdf');
+
+
+%%
+a = 8;  % Scale param
+b = 2.;  % Shape param
+WeibullPDF = makedist('Weibull', 'a', a, 'b', b);             % Zone 1
+
+x = linspace(0, 30, 1000);
+y = WeibullPDF.pdf(x);
+
+rv = WeibullPDF.random([1000 1]);
+
+plot(x, y, 'LineWidth', 3);
+hold on;
+histogram(rv, 100, 'Normalization', 'pdf');
+
+%%
+mu = 50;   % Define distribution params
+sigma = 15;
+left_truc = 10;
+right_truc = 90;
+
+normPDF = makedist('Normal', 'mu', mu, 'sigma', sigma);   % Zone 1
+trucNormPDF = normPDF1.truncate(left_truc, right_truc);
+
+x = linspace(0, 100, 1000);
+pdf = trucNormPDF.pdf(x);
+
+rv = trucNormPDF.icdf(correlated_CDF(1, :, 5));
+
+plot(x, pdf);
+hold on;
+histogram(rv, 10, 'Normalization', 'pdf');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
