@@ -85,7 +85,13 @@ class PGSAGE(nn.Module):
             nn.ReLU(),
         ])
 
-        self.readout = nn.Linear(128, 12)
+        self.readout = nn.Sequential(
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 12)
+        )
     
     def forward(self, x, edge_index):
         # Encoder
