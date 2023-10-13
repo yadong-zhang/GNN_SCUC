@@ -13,12 +13,12 @@ num_thermals = length(thermal_buses);
 
 % Max gen capacity
 rng(10);                              
-Pmax = 200*ones([num_gens, 1]);
+Pmax = 230*ones([num_gens, 1]);
 file_path = './Pmax.csv';
 writematrix(Pmax, file_path, WriteMode="overwrite");
 
 % Min gen capacity
-Pmin = 50*ones([num_gens, 1]);
+Pmin = 30*ones([num_gens, 1]);
 file_path = './Pmin.csv';
 writematrix(Pmin, file_path, WriteMode="overwrite");
 
@@ -62,7 +62,7 @@ file_path = './reserve_cost.csv';
 writematrix(reserve_cost, file_path, WriteMode="overwrite");
 % Reserve qty
 rng(35);
-reserve_qty = 50*ones([num_thermals, 1]); 
+reserve_qty = 30*ones([num_thermals, 1]); 
 file_path = './reserve_qty.csv';
 writematrix(reserve_qty, file_path, WriteMode="overwrite");
 
