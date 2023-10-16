@@ -10,6 +10,51 @@ import torch.nn as nn
 from torch.functional import F
 from torch_geometric.nn import GCNConv, SAGEConv, Sequential
 
+
+class PGSAGE(nn.Module):
+    def __init__(self, input_dim1=32, input_dim2=44, hidden_dim1=32, hidden_dim2=32, output_dim1=32, output_dim2=12):
+        super(PGSAGE, self).__init__()
+
+        self.input_dim1 = input_dim1
+        self.input_dim2 = input_dim2
+        self.hidden_dim1 = hidden_dim1
+        self.hidden_dim2 = hidden_dim2
+        self.output_dim1 = output_dim1
+        self.output_dim2 = output_dim2
+
+        # Encoder
+        self.encoder = nn.Sequential(
+            nn.Linear(self.input_dim1, self.hidden_dim1),
+            nn.ReLU(),
+            nn.Linear(self.hidden_dim1, self.output_dim1),
+            nn.ReLU()
+        )
+
+        self.gnn = Sequential('x, edge_index', [
+            (SAGEConv(self.input_dim2, self.hidden_dim2), 'x, edge_index -> x'),
+            nn.ReLU(),
+            (SAGEConv(self.hidden_dim2, self.hidden_dim2), 'x, edge_index -> x'),
+            nn.ReLU()
+        ])
+
+        self.readout = nn.Sequential(
+            nn.Linear(self.hidden_dim2, 64),
+            nn.ReLU(),
+            nn.Linear(64, self.output_dim2)
+        )
+    
+    def forward(self, x, edge_index):
+        # Encoder
+        temp = self.encoder(x[:, :self.input_dim1])
+        x = torch.cat([temp, x[:, self.input_dim1:]], dim=1)
+
+        # GNN layers
+        x = self.gnn(x, edge_index)
+        x = self.readout(x)
+
+        return x
+    
+
 class PGANN(nn.Module):
     def __init__(self, input_dim1=32, input_dim2=44, hidden_dim1=32, hidden_dim2=32, output_dim1=32, output_dim2=12):
         super(PGANN, self).__init__()
@@ -48,61 +93,6 @@ class PGANN(nn.Module):
 
         return x
     
-
-class PGSAGE(nn.Module):
-    def __init__(self, input_dim1=32, input_dim2=44, hidden_dim1=32, hidden_dim2=32, output_dim1=32, output_dim2=12):
-        super(PGSAGE, self).__init__()
-
-        self.input_dim1 = input_dim1
-        self.input_dim2 = input_dim2
-        self.hidden_dim1 = hidden_dim1
-        self.hidden_dim2 = hidden_dim2
-        self.output_dim1 = output_dim1
-        self.output_dim2 = output_dim2
-
-        # Encoder
-        self.encoder = nn.Sequential(
-            nn.Linear(self.input_dim1, self.hidden_dim1),
-            nn.ReLU(),
-            nn.Linear(self.hidden_dim1, self.output_dim1),
-            nn.ReLU()
-        )
-
-        # SAGE layers
-        # self.gnn = Sequential('x, edge_index', [
-        #     (SAGEConv(self.input_dim2, self.hidden_dim2), 'x, edge_index -> x'),
-        #     nn.ReLU(),
-        #     (SAGEConv(self.hidden_dim2, self.hidden_dim2), 'x, edge_index -> x'),
-        #     nn.ReLU(),
-        #     (SAGEConv(self.hidden_dim2, self.output_dim2), 'x, edge_index -> x')
-        # ])
-        self.gnn = Sequential('x, edge_index', [
-            (SAGEConv(self.input_dim2, 512), 'x, edge_index -> x'),
-            nn.ReLU(),
-            (SAGEConv(512, 512), 'x, edge_index -> x'),
-            nn.ReLU(),
-            (SAGEConv(512, 128), 'x, edge_index -> x'),
-            nn.ReLU(),
-        ])
-
-        self.readout = nn.Sequential(
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 32),
-            nn.ReLU(),
-            nn.Linear(32, 12)
-        )
-    
-    def forward(self, x, edge_index):
-        # Encoder
-        temp = self.encoder(x[:, :self.input_dim1])
-        x = torch.cat([temp, x[:, self.input_dim1:]], dim=1)
-
-        # GNN layers
-        x = self.gnn(x, edge_index)
-        x = self.readout(x)
-
-        return x
     
 
 class PGGCN(nn.Module):
