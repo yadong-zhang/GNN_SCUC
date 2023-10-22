@@ -13,7 +13,7 @@ num_thermals = length(thermal_buses);
 
 % Max gen capacity
 rng(10);                              
-Pmax = unifrnd(100, 200, [num_gens, 1]);
+Pmax = 230*ones([num_gens, 1]);
 file_path = './Pmax.csv';
 writematrix(Pmax, file_path, WriteMode="overwrite");
 
@@ -24,25 +24,27 @@ writematrix(Pmin, file_path, WriteMode="overwrite");
 
 % Ramp up/dowm limit within 30 mins
 rng(12);                      
-ramp_30 = unifrnd(50, 80, [num_gens, 1]);
+ramp_30 = 200*ones([num_gens, 1]);
 file_path = './ramp_30.csv';
 writematrix(ramp_30, file_path, WriteMode="overwrite");
 
 % StartUp cost, cannot be too big
 rng(15);                               
-startup_cost = unifrnd(5, 15, [num_gens, 1]);
+startup_cost = 0*ones([num_gens, 1]);
+% startup_cost = zeros(num_gens, 1);
 file_path = './startup_cost.csv';
 writematrix(startup_cost, file_path, WriteMode="overwrite");
 
 % ShutDown cost, cannot be too big
 rng(20);                            
-shutdown_cost = unifrnd(5, 15, [num_gens, 1]);
+shutdown_cost = 0*ones([num_gens, 1]);
+% shutdown_cost = zeros(num_gens, 1);
 file_path = './shutdown_cost.csv';
 writematrix(shutdown_cost, file_path, WriteMode="overwrite");
 
 % Set cost coeff
 rng(25);                                 
-gencost_params = unifrnd(0.1, 1.5, [num_gens, 1]);
+gencost_params = 1*ones([num_gens, 1]);
 file_path = './gencost_params.csv';
 writematrix(gencost_params, file_path, WriteMode="overwrite");
 
@@ -55,12 +57,12 @@ file_path = './reserve_req.csv';
 writematrix(reserve_req, file_path, WriteMode="overwrite");
 % Reserve cost
 rng(30);
-reserve_cost = unifrnd(0.8, 2., [num_thermals, 1]); 
+reserve_cost = 1.*ones([num_thermals, 1]); 
 file_path = './reserve_cost.csv';
 writematrix(reserve_cost, file_path, WriteMode="overwrite");
 % Reserve qty
 rng(35);
-reserve_qty = unifrnd(30, 80, [num_thermals, 1]); 
+reserve_qty = 30*ones([num_thermals, 1]); 
 file_path = './reserve_qty.csv';
 writematrix(reserve_qty, file_path, WriteMode="overwrite");
 

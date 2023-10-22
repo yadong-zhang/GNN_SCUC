@@ -3,7 +3,7 @@ function WindLoadProportion()
 % Generate wind proportion for each zone
 
 % Set random seed
-rng(10);
+rng(20);
 
 % Read wind buses
 zone1_wind_buses = readmatrix('zone1_wind_bus.csv');
@@ -27,25 +27,25 @@ zone8_load_buses = readmatrix('zone8_load_bus.csv');
 
 
 % Generate wind proportion
-zone1_wind_proportion = unifrnd(0.5, 1.5, size(zone1_wind_buses));
-zone2_wind_proportion = unifrnd(0.5, 1.5, size(zone2_wind_buses));
-zone3_wind_proportion = unifrnd(0.5, 1.5, size(zone3_wind_buses));
-zone4_wind_proportion = unifrnd(0.5, 1.5, size(zone4_wind_buses));
-zone5_wind_proportion = unifrnd(0.5, 1.5, size(zone5_wind_buses));
-zone6_wind_proportion = unifrnd(0.5, 1.5, size(zone6_wind_buses));
-zone7_wind_proportion = unifrnd(0.5, 1.5, size(zone7_wind_buses));
-zone8_wind_proportion = unifrnd(0.5, 1.5, size(zone8_wind_buses));
+zone1_wind_proportion = unifrnd(0.8, 1.2, size(zone1_wind_buses));
+zone2_wind_proportion = unifrnd(0.8, 1.2, size(zone2_wind_buses));
+zone3_wind_proportion = unifrnd(0.8, 1.2, size(zone3_wind_buses));
+zone4_wind_proportion = unifrnd(0.8, 1.2, size(zone4_wind_buses));
+zone5_wind_proportion = unifrnd(0.8, 1.2, size(zone5_wind_buses));
+zone6_wind_proportion = unifrnd(0.8, 1.2, size(zone6_wind_buses));
+zone7_wind_proportion = unifrnd(0.8, 1.2, size(zone7_wind_buses));
+zone8_wind_proportion = unifrnd(0.8, 1.2, size(zone8_wind_buses));
 
 
 % Generate load proportion
-zone1_load_proportion = unifrnd(0.5, 1.5, size(zone1_load_buses));
-zone2_load_proportion = unifrnd(0.5, 1.5, size(zone2_load_buses));
-zone3_load_proportion = unifrnd(0.5, 1.5, size(zone3_load_buses));
-zone4_load_proportion = unifrnd(0.5, 1.5, size(zone4_load_buses));
-zone5_load_proportion = unifrnd(0.5, 1.5, size(zone5_load_buses));
-zone6_load_proportion = unifrnd(0.5, 1.5, size(zone6_load_buses));
-zone7_load_proportion = unifrnd(0.5, 1.5, size(zone7_load_buses));
-zone8_load_proportion = unifrnd(0.5, 1.5, size(zone8_load_buses));
+zone1_load_proportion = unifrnd(1, 2, size(zone1_load_buses));
+zone2_load_proportion = unifrnd(1, 2, size(zone2_load_buses));
+zone3_load_proportion = unifrnd(1, 2, size(zone3_load_buses));
+zone4_load_proportion = unifrnd(1, 2, size(zone4_load_buses));
+zone5_load_proportion = unifrnd(1, 2, size(zone5_load_buses));
+zone6_load_proportion = unifrnd(1, 2, size(zone6_load_buses));
+zone7_load_proportion = unifrnd(1, 2, size(zone7_load_buses));
+zone8_load_proportion = unifrnd(1, 2, size(zone8_load_buses));
 
 
 % Save wind proportion

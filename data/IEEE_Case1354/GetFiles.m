@@ -16,9 +16,14 @@ wind_buses = readmatrix('zones/wind_bus.csv');
 zone1_thermals = readmatrix('zones/zone1_thermal_buses.csv');
 zone2_thermals = readmatrix('zones/zone2_thermal_buses.csv');
 zone3_thermals = readmatrix('zones/zone3_thermal_buses.csv');
+zone4_thermals = readmatrix('zones/zone4_thermal_buses.csv');
+zone5_thermals = readmatrix('zones/zone5_thermal_buses.csv');
+zone6_thermals = readmatrix('zones/zone6_thermal_buses.csv');
+zone7_thermals = readmatrix('zones/zone7_thermal_buses.csv');
+zone8_thermals = readmatrix('zones/zone8_thermal_buses.csv');
 
 % Set numbers
-num_zones = 3;
+num_zones = 8;
 num_gens = size(gen_buses, 1);
 num_loads = size(load_buses, 1);
 
@@ -38,9 +43,9 @@ reserve_qty = readmatrix('./gen_params/reserve_qty.csv');
 PF_max_catgory1 = logical(readmatrix('./branch_params/PF_max_category1.csv'));
 PF_max_catgory2 = logical(readmatrix('./branch_params/PF_max_category2.csv'));
 PF_max_catgory3 = logical(readmatrix('./branch_params/PF_max_category3.csv'));
-PF_max1 = 100;
-PF_max2 = 200;
-PF_max3 = 400;
+PF_max1 = 0;
+PF_max2 = 0;
+PF_max3 = 0;
 
 
 %% Set power grid case file
@@ -115,11 +120,36 @@ temp3 = zeros(1, num_gens);
 bidx = ismember(gen_buses, zone3_thermals);
 temp3(bidx) = 1;
 
-temp4 = zeros(1, num_loads);    % Dispatchable loads
+temp4 = zeros(1, num_gens);
+bidx = ismember(gen_buses, zone4_thermals);
+temp4(bidx) = 1;
 
-mpc.reserves.zones(1, :) = cat(2, temp1, temp4);
-mpc.reserves.zones(2, :) = cat(2, temp2, temp4);
-mpc.reserves.zones(3, :) = cat(2, temp3, temp4);
+temp5 = zeros(1, num_gens);
+bidx = ismember(gen_buses, zone5_thermals);
+temp5(bidx) = 1;
+
+temp6 = zeros(1, num_gens);
+bidx = ismember(gen_buses, zone6_thermals);
+temp6(bidx) = 1;
+
+temp7 = zeros(1, num_gens);
+bidx = ismember(gen_buses, zone7_thermals);
+temp7(bidx) = 1;
+
+temp8 = zeros(1, num_gens);
+bidx = ismember(gen_buses, zone8_thermals);
+temp8(bidx) = 1;
+
+temp9 = zeros(1, num_loads);    % Dispatchable loads
+
+mpc.reserves.zones(1, :) = cat(2, temp1, temp9);
+mpc.reserves.zones(2, :) = cat(2, temp2, temp9);
+mpc.reserves.zones(3, :) = cat(2, temp3, temp9);
+mpc.reserves.zones(4, :) = cat(2, temp4, temp9);
+mpc.reserves.zones(5, :) = cat(2, temp5, temp9);
+mpc.reserves.zones(6, :) = cat(2, temp6, temp9);
+mpc.reserves.zones(7, :) = cat(2, temp7, temp9);
+mpc.reserves.zones(8, :) = cat(2, temp8, temp9);
 
 % reserve requirements for each zone in MW
 mpc.reserves.req = reserve_req;             % Should be consistent with "num_zones"

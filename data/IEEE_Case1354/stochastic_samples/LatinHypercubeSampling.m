@@ -2,7 +2,7 @@ function LatinHypercubeSampling(num_zones, num_samples, nt)
 % Generate stochastic load and wind samples using LHS
 
 % Set random seed
-rng(25);
+rng('default');
 
 % Get num of variables
 num_vars = num_zones * 2;
@@ -20,6 +20,13 @@ end
 
 % % Generate stochastic samples (aggregated)
 [agg_loads, agg_winds] = GenerateSamples(init_state, nt);
+
+% % Save aggregated samples
+for i = 1:nt
+    sheetName = ['t=' num2str(i)];
+    writematrix(agg_loads(:, :, i), './aggregated_load_samples.xlsx', 'Sheet', sheetName, 'WriteMode', 'overwritesheet');
+    writematrix(agg_winds(:, :, i), './aggregated_wind_samples.xlsx', 'Sheet', sheetName, 'WriteMode', 'overwritesheet');
+end
 
 
 % % Load samples
@@ -56,9 +63,8 @@ zone6_loads = tensorprod(zone6_load_prop, agg_loads(6, :, :), 2, 1);
 zone7_loads = tensorprod(zone7_load_prop, agg_loads(7, :, :), 2, 1);
 zone8_loads = tensorprod(zone8_load_prop, agg_loads(8, :, :), 2, 1);
 
-
 % Get combined load samples
-zone1_load_bidx = ismember(load_bus, zone1_load_bus);   % Get boolean index of  zone 1 load bus out of all load buses
+zone1_load_bidx = ismember(load_bus, zone1_load_bus);   % Get Boolean index of  zone 1 load bus out of all load buses
 zone2_load_bidx = ismember(load_bus, zone2_load_bus);
 zone3_load_bidx = ismember(load_bus, zone3_load_bus);
 zone4_load_bidx = ismember(load_bus, zone4_load_bus);
@@ -116,20 +122,18 @@ zone6_wind_prop = readmatrix('../zones/zone6_wind_proportion.csv');
 zone7_wind_prop = readmatrix('../zones/zone7_wind_proportion.csv');
 zone8_wind_prop = readmatrix('../zones/zone8_wind_proportion.csv');
 
-
-
 % Calculate wind for each zone
-zone1_winds(:, :, :) = tensorprod(zone1_wind_prop, agg_winds(1, :, :), 2, 1);
-zone2_winds(:, :, :) = tensorprod(zone2_wind_prop, agg_winds(2, :, :), 2, 1);
-zone3_winds(:, :, :) = tensorprod(zone3_wind_prop, agg_winds(3, :, :), 2, 1);
-zone4_winds(:, :, :) = tensorprod(zone4_wind_prop, agg_winds(4, :, :), 2, 1);
-zone5_winds(:, :, :) = tensorprod(zone5_wind_prop, agg_winds(5, :, :), 2, 1);
-zone6_winds(:, :, :) = tensorprod(zone6_wind_prop, agg_winds(6, :, :), 2, 1);
-zone7_winds(:, :, :) = tensorprod(zone7_wind_prop, agg_winds(7, :, :), 2, 1);
-zone8_winds(:, :, :) = tensorprod(zone8_wind_prop, agg_winds(8, :, :), 2, 1);
+zone1_winds = tensorprod(zone1_wind_prop, agg_winds(1, :, :), 2, 1);
+zone2_winds = tensorprod(zone2_wind_prop, agg_winds(2, :, :), 2, 1);
+zone3_winds = tensorprod(zone3_wind_prop, agg_winds(3, :, :), 2, 1);
+zone4_winds = tensorprod(zone4_wind_prop, agg_winds(4, :, :), 2, 1);
+zone5_winds = tensorprod(zone5_wind_prop, agg_winds(5, :, :), 2, 1);
+zone6_winds = tensorprod(zone6_wind_prop, agg_winds(6, :, :), 2, 1);
+zone7_winds = tensorprod(zone7_wind_prop, agg_winds(7, :, :), 2, 1);
+zone8_winds = tensorprod(zone8_wind_prop, agg_winds(8, :, :), 2, 1);
 
 % Get combined wind samples
-zone1_wind_bidx = ismember(wind_bus, zone1_wind_bus);   % Get boolean index of  zone 1 wind bus out of all wind buses
+zone1_wind_bidx = ismember(wind_bus, zone1_wind_bus);   % Get Boolean index of  zone 1 wind bus out of all wind buses
 zone2_wind_bidx = ismember(wind_bus, zone2_wind_bus);
 zone3_wind_bidx = ismember(wind_bus, zone3_wind_bus);
 zone4_wind_bidx = ismember(wind_bus, zone4_wind_bus);
@@ -147,7 +151,6 @@ winds(zone5_wind_bidx, :, :) = zone5_winds;
 winds(zone6_wind_bidx, :, :) = zone6_winds;
 winds(zone7_wind_bidx, :, :) = zone7_winds;
 winds(zone8_wind_bidx, :, :) = zone8_winds;
-
 
 % Save combined data
 for i = 1:nt
