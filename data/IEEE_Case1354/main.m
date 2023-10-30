@@ -71,7 +71,7 @@ nt = size(wind_samples, 1);     % Number of time steps
 
 %%%%%%%%%%%%%% Be careful about this number %%%%%%%%%%%%%%%%%%%%%
 % Number of stochastic SCUC samples
-num_samples = 1000;    
+num_samples = 1;    
 
 
 
@@ -134,6 +134,8 @@ while true
         fprintf("ms failed for sample %d, skipped\n", i);
         continue;
     end
+
+
 
 
 
