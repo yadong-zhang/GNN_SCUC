@@ -19,7 +19,7 @@ num_thermals = length(thermal_buses);
 % Max gen capacity
 rng(10);                              
 % Pmax = 500*ones([num_gens, 1]);
-Pmax = unifrnd(200, 500, [num_gens, 1]);
+Pmax = unifrnd(350, 400, [num_gens, 1]);
 file_path = './Pmax.csv';
 writematrix(Pmax, file_path, WriteMode="overwrite");
 
@@ -31,6 +31,7 @@ writematrix(Pmin, file_path, WriteMode="overwrite");
 % Ramp up/dowm limit within 30 mins
 rng(12);                      
 ramp_30 = 100*ones([num_gens, 1]);
+% ramp_30 = zeros([num_gens, 1]);
 file_path = './ramp_30.csv';
 writematrix(ramp_30, file_path, WriteMode="overwrite");
 

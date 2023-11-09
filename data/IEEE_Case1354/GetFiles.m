@@ -43,9 +43,9 @@ reserve_qty = readmatrix('./gen_params/reserve_qty.csv');
 PF_max_catgory1 = logical(readmatrix('./branch_params/PF_max_category1.csv'));
 PF_max_catgory2 = logical(readmatrix('./branch_params/PF_max_category2.csv'));
 PF_max_catgory3 = logical(readmatrix('./branch_params/PF_max_category3.csv'));
-PF_max1 = 0;
-PF_max2 = 0;
-PF_max3 = 0;
+PF_max1 = 500;
+PF_max2 = 1000;
+PF_max3 = 2000;
 
 
 %% Set power grid case file
