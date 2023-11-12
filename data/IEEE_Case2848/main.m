@@ -135,8 +135,7 @@ while true
         continue;
     end
 
-
-
+    fprintf('Check point 1\n');
 
 
 
@@ -152,6 +151,10 @@ while true
     % Save deployed wind power
     save_path = ['./outputs/deployed_wind/sample_' num2str(i) '.csv'];
     writematrix(deployed_wind, save_path, 'WriteMode', 'overwrite');
+
+
+
+    fprintf('Check point 2\n');
 
 
 
