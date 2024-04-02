@@ -40,7 +40,7 @@ class AggSheddingSAGE(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(self.hidden_dim, self.hidden_dim//2),
             nn.ReLU(),
-            nn.Linear(self.hidden_dim//2, 48)
+            nn.Linear(self.hidden_dim//2, 108)
         )
 
         
